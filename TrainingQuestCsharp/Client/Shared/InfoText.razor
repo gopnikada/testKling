@@ -21,13 +21,8 @@
 
         var response = await httpClient.GetAsync("/api/data/file");
 
-        //var vrResponse = await response.Content.ReadAsStringAsync();
-
-        //foreach (var item in vrResponse)
-        //{
-           // var vr = new ValueRow(Double.Parse(item["value"]), DateTime.Parse(item["value"]));
         var vr = await response.Content.ReadFromJsonAsync < List<ValueRow>>();
-        //}
+        
 
 
     }

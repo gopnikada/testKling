@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TrainingQuestCsharp.Server.Helpers;
 
 namespace TrainingQuestCsharp.Server.Controllers
 {
@@ -21,7 +22,15 @@ namespace TrainingQuestCsharp.Server.Controllers
         [HttpGet()]
         public ActionResult<List<string>> GetAllFileNames()
         {
-            return BadRequest("Funktion nicht implementiert");
+            string? folderPath = configuration.GetSection("DataPath").Value;
+            FilesInDir.TraverseDirectory(folderPath);
+            var paths = FilesInDir.Paths;
+
+            //foreach (var item in collection)
+            //{
+
+            //}
+            return Ok("ok1");
         }
     }
 }
