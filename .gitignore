@@ -1,0 +1,67 @@
+# Compiled Object files
+*.sloccount
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+*.sln.ide
+*.ide
+
+# Compiled Dynamic libraries
+*.dll
+*.exe
+*.pdb
+*.dll.config
+*.exe.config
+
+# NuGet Packages
+*.nupkg
+*.paket
+packages/
+*.local.json
+.bundler/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio files
+*.csproj.user
+*.csproj.vspscc
+.vs/
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.scc
+*.sdf
+*.opensdf
+*.unsuccessfulbuild
+ipch/
+*.VC.db
+*.VC.opendb
+*.VC.VC.opendb
+*.sln.docstates.cache
+*.sln.ide.cache
+*.ide.cache
+*.sln.ide.cache
+
+# Resharper
+_ReSharper*/
+*.resharper
+*.[Rr]e[Ss]harper
+*.DotSettings.user

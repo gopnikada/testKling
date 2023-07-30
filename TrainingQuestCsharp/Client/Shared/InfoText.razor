@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@inject HttpClient httpClient
+
+<h2>Time: @time</h2>
+<button @onclick="Submit">Click</button>
+
+<h3>Aufgabe</h3>
+<p>Unterhalb dieses Texts soll die Tabelle entstehen.<br />Ihr Einstiegspunkt ist die Datei 'Pages/Index.razor', dort finden sie weitere Informationen</p>
+<p>Die Tabelle muss als Zeilen-Header den Zeitstempel. Es ist ausreichend, die ersten 20 Zeitstempel darzustellen. Sortieren sie die Liste absteigend. <br /></p>
+
+<p>Es steht Ihnen frei 'Table'-Elemente oder Grid oder HTML5-Sections zu verwenden.</p>
+<p>Wir möchten aber darum bitten dennoch an die Usability des Nutzers zu denken.</p>
+
+@code {
+    string? time;
+    async Task Submit()
+    {
+        //try
+        //{
+            var response = await httpClient.GetAsync("/api/test1/test2");
+        //}catch(Exception e)
+        //{
+            
+        //}
+
+        time = await response.Content.ReadAsStringAsync();
+    }
+}
