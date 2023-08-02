@@ -28,28 +28,33 @@ namespace TrainingQuestCsharp.Server.Controllers
         public ActionResult<List<string>> GetAllFileNames()
         {
             var dict = new List<KeyValuePair<string, List<ValueRow>>>();
-            var allRows = new List<ValueRow>();
+            var allRows = new List<ValueRowPath>();
             string? folderPath = configuration.GetSection("DataPath").Value;
             FilesInDir.TraverseDirectory(folderPath);
             var paths = FilesInDir.Paths;
 
             foreach (var path in paths)
             {
-                //int minIndex = path.IndexOf(folderPath);
-                //string usefulPath = path[minIndex..];
+                int minIndex = path.IndexOf(folderPath);
+                string usefulPath = path[minIndex..];
 
                 var rawsFromFile = dataReader.ReadValues(path);
 
                 //var kv = new KeyValuePair<string, List<ValueRow>>(usefulPath, rawsFromFile);
                 //dict.Add(kv);
-                allRows.AddRange(rawsFromFile);
+                foreach (var item in rawsFromFile)
+                {
+                    var vrp = new ValueRowPath(item.Value, item.Timestamp, usefulPath);
+                    allRows.Add(vrp);
+                }
+
 
             }
             var results = allRows.GroupBy(
      p => p.Timestamp,
-     p => p.Value,
+     p => p.Path,
+     
      (key, g) => new { Timestamp = key, Value = g.ToList() });
-
 
 
             return Ok("ok1");
