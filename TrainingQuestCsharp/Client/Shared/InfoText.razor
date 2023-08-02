@@ -9,9 +9,9 @@
     <thead>
         <tr>
             <th>Timestamp</th>
-            @foreach (var h in vrp.FirstOrDefault().FirstOrDefault().Value)
+            @foreach (string path in headerPaths)
             {
-                <th>@h.Path</th>
+                <th>@path</th>
             }
            
         </tr>
@@ -42,11 +42,13 @@
 @code {
     string? time;
     List<Dictionary<DateTime, List<ValuePath>>>? vrp = new List<Dictionary<DateTime, List<ValuePath>>>();
-
+    List<string> headerPaths = new List<string>();
 
     async Task Submit()
     {
         var response = await httpClient.GetAsync("/api/files/all");
         vrp = await response.Content.ReadFromJsonAsync<List<Dictionary<DateTime, List<ValuePath>>>>();
+
+        headerPaths = vrp.Select(x => x.FirstOrDefault().Value.Select(y => y.Path)).FirstOrDefault().ToList();
     }
 }
