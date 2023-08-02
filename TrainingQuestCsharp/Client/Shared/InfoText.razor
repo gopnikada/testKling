@@ -5,6 +5,27 @@
 <h2>Time: @time</h2>
 <button @onclick="Submit">Click</button>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>Timestamp</th>
+            <th>Value</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vr in vrl)
+        {
+            <tr>
+                <td>@vr.Timestamp.ToString()</td>
+                <td>@vr.Value.ToString()</td>
+                
+            </tr>
+            
+        }
+    </tbody>
+</table>
+
 <h3>Aufgabe</h3>
 <p>Unterhalb dieses Texts soll die Tabelle entstehen.<br />Ihr Einstiegspunkt ist die Datei 'Pages/Index.razor', dort finden sie weitere Informationen</p>
 <p>Die Tabelle muss als Zeilen-Header den Zeitstempel. Es ist ausreichend, die ersten 20 Zeitstempel darzustellen. Sortieren sie die Liste absteigend. <br /></p>
@@ -14,14 +35,14 @@
 
 @code {
     string? time;
-    List<ValueRow> vrl = new List<ValueRow>();
+    List<ValueRow>? vrl = new List<ValueRow>();
 
     async Task Submit()
     {
 
         var response = await httpClient.GetAsync("/api/data/file");
 
-        var vr = await response.Content.ReadFromJsonAsync < List<ValueRow>>();
+        vrl = await response.Content.ReadFromJsonAsync<List<ValueRow>>();
         
 
 
