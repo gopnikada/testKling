@@ -9,16 +9,23 @@
     <thead>
         <tr>
             <th>Timestamp</th>
-            <th>Value</th>
+            @foreach(var h in vrp)
+            {
+                <th>@h.FirstOrDefault().Value.FirstOrDefault().Path.ToString()</th>
+            }
            
         </tr>
     </thead>
     <tbody>
-        @foreach (var vr in vrl)
+        @foreach (var vr in vrp)
         {
             <tr>
-                <td>@vr.Timestamp.ToString()</td>
-                <td>@vr.Value.ToString()</td>                
+                <td>@vr.FirstOrDefault().Key.ToString()</td>
+                @foreach (var vp in vr.FirstOrDefault().Value)
+                {
+                    <td>@vp.Value.ToString()</td>
+                }
+                
             </tr>
             
         }
@@ -34,15 +41,15 @@
 
 @code {
     string? time;
-    List<ValueRow>? vrl = new List<ValueRow>();
+    List<Dictionary<DateTime, List<ValuePath>>>? vrp = new List<Dictionary<DateTime, List<ValuePath>>>();
+
 
     async Task Submit()
     {
 
-        var response = await httpClient.GetAsync("/api/data/file");
+        var response = await httpClient.GetAsync("/api/files/all");
 
-        vrl = await response.Content.ReadFromJsonAsync<List<ValueRow>>();
-        
+        vrp = await response.Content.ReadFromJsonAsync<List<Dictionary<DateTime, List<ValuePath>>>>();
 
 
     }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using TrainingQuestCsharp.Server.Helpers;
 using TrainingQuestCsharp.Server.Provider;
 using TrainingQuestCsharp.Shared.Models;
@@ -24,13 +26,14 @@ namespace TrainingQuestCsharp.Server.Controllers
         /// Kleiner Tipp ... der Pfad zu den Dateien ist in der Config hinterlegt.
         /// </summary>
         /// <returns></returns>
-        [HttpGet()]
+        [HttpGet("all")]
         public ActionResult<List<string>> GetAllFileNames()
         {
             var dict = new List<KeyValuePair<string, List<ValueRow>>>();
             var allRows = new List<ValueRowPath>();
             string? folderPath = configuration.GetSection("DataPath").Value;
             FilesInDir.TraverseDirectory(folderPath);
+            
             var paths = FilesInDir.Paths;
 
             foreach (var path in paths)
@@ -50,14 +53,18 @@ namespace TrainingQuestCsharp.Server.Controllers
 
 
             }
-            var results = allRows.GroupBy(
+            var groupedResults1 = allRows.GroupBy(
      p => p.Timestamp,
-     p => p.Path,
-     
-     (key, g) => new { Timestamp = key, Value = g.ToList() });
+     p => new ValuePath( p.Value, p.Path ),
+     (key, g) => new { Timestamp = key, Value = g.ToList<ValuePath>() }).Take(20);
 
+            var type = groupedResults1.Select(x => new Dictionary<DateTime, List<ValuePath>> { { x.Timestamp, x.Value } }).ToList();
+            
 
-            return Ok("ok1");
+            //var sdf2 = groupedResults1.ToDictionary(x=>x.Value.
+            //});
+
+            return Ok(type);
         }
     }
 }

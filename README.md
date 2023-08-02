@@ -19,7 +19,7 @@
   - Die Kommunikation Frontend-Backend muss - REST-Konform stattfinden
   - Die Wahl der Nachrichten-Formatierung ist frei (JSON, XML, etc.)
   - Einstiegspunkt im Backend ist der Controller `DbfController`
-- Folgende Punkte stehen der freien Kreativit�t offen:
+  - Folgende Punkte stehen der freien Kreativit�t offen:
   - Welche Teile der Aufgabe im Backend und welche im Frontend gel�st werden
   - Wie die Oberfl�che detailliert grafisch aussieht (notwendig ist nur eine tabellenartige struktur).
 
