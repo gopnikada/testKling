@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var vr in vrp)
+        @foreach (var vr in data)
         {
             <tr>
                 <td>@vr.FirstOrDefault().Key.ToString()</td>
@@ -41,14 +41,14 @@
 
 @code {
     string? time;
-    List<Dictionary<DateTime, List<ValuePath>>>? vrp = new List<Dictionary<DateTime, List<ValuePath>>>();
+    List<Dictionary<DateTime, List<ValuePath>>>? data = new List<Dictionary<DateTime, List<ValuePath>>>();
     List<string> headerPaths = new List<string>();
 
     async Task Submit()
     {
         var response = await httpClient.GetAsync("/api/files/all");
-        vrp = await response.Content.ReadFromJsonAsync<List<Dictionary<DateTime, List<ValuePath>>>>();
+        data = await response.Content.ReadFromJsonAsync<List<Dictionary<DateTime, List<ValuePath>>>>();
 
-        headerPaths = vrp.Select(x => x.FirstOrDefault().Value.Select(y => y.Path)).FirstOrDefault().ToList();
+        headerPaths = data.Select(x => x.FirstOrDefault().Value.Select(y => y.Path)).FirstOrDefault().ToList();
     }
 }

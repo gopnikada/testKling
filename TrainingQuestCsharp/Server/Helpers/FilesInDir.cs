@@ -5,7 +5,7 @@ namespace TrainingQuestCsharp.Server.Helpers
     public static class FilesInDir
     {
         public static List<string> Paths = new List<string>();
-        public static void TraverseDirectory(string folderPath)
+        public static void FindFilesInDir(string folderPath)
         {
 
             DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
@@ -13,7 +13,7 @@ namespace TrainingQuestCsharp.Server.Helpers
 
             foreach (var subdirectory in subdirectories)
             {
-                TraverseDirectory(subdirectory.FullName);
+                FindFilesInDir(subdirectory.FullName);
             }
 
             var files = directoryInfo.EnumerateFiles();

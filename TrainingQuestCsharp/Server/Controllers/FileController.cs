@@ -29,11 +29,13 @@ namespace TrainingQuestCsharp.Server.Controllers
         [HttpGet("all")]
         public ActionResult<List<string>> GetAllFileNames()
         {
-            var dict = new List<KeyValuePair<string, List<ValueRow>>>();
-            var allRows = new List<ValueRowPath>();
-            string? folderPath = configuration.GetSection("DataPath").Value;
-            FilesInDir.TraverseDirectory(folderPath);
             
+            var unstructuredDataList = new List<ValueRowPath>();
+
+            string? folderPath = configuration.GetSection("DataPath").Value;
+
+            FilesInDir.FindFilesInDir(folderPath);
+
             var paths = FilesInDir.Paths;
 
             foreach (var path in paths)
@@ -41,31 +43,26 @@ namespace TrainingQuestCsharp.Server.Controllers
                 int minIndex = path.IndexOf(folderPath);
                 string usefulPath = path[minIndex..];
 
-                var rawsFromFile = dataReader.ReadValues(path);
+                var rowsFromFile = dataReader.ReadValues(path);
 
-                //var kv = new KeyValuePair<string, List<ValueRow>>(usefulPath, rawsFromFile);
-                //dict.Add(kv);
-                foreach (var item in rawsFromFile)
+                foreach (var row in rowsFromFile)
                 {
-                    var vrp = new ValueRowPath(item.Value, item.Timestamp, usefulPath);
-                    allRows.Add(vrp);
+                    var dataWithPath = new ValueRowPath(row.Value, row.Timestamp, usefulPath);
+                    unstructuredDataList.Add(dataWithPath);
                 }
 
-
             }
-            var groupedResults1 = allRows.GroupBy(
-     p => p.Timestamp,
-     p => new ValuePath( p.Value, p.Path ),
-     (key, g) => new { Timestamp = key, Value = g.ToList<ValuePath>() }).Take(20);
 
-            var type = groupedResults1.Select(x => new Dictionary<DateTime, List<ValuePath>> { { x.Timestamp, x.Value } }).ToList();
+            var groupedData = unstructuredDataList.GroupBy(
+             p => p.Timestamp,
+             p => new ValuePath(p.Value, p.Path),
+             (key, g) => new { Timestamp = key, Value = g.ToList() }).Take(20);
 
-            type.ForEach(x => x.FirstOrDefault().Value.RemoveAll(y=>y.Value==0));
+            var typedData = groupedData.Select(x => new Dictionary<DateTime, List<ValuePath>> { { x.Timestamp, x.Value } }).ToList();
 
-            //var sdf2 = groupedResults1.ToDictionary(x=>x.Value.
-            //});
+            typedData.ForEach(x => x.FirstOrDefault().Value.RemoveAll(y => y.Value == 0));
 
-            return Ok(type);
+            return Ok(typedData);
         }
     }
 }
