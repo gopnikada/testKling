@@ -9,9 +9,9 @@
     <thead>
         <tr>
             <th>Timestamp</th>
-            @foreach(var h in vrp)
+            @foreach (var h in vrp.FirstOrDefault().FirstOrDefault().Value)
             {
-                <th>@h.FirstOrDefault().Value.FirstOrDefault().Path.ToString()</th>
+                <th>@h.Path</th>
             }
            
         </tr>
@@ -46,11 +46,7 @@
 
     async Task Submit()
     {
-
         var response = await httpClient.GetAsync("/api/files/all");
-
         vrp = await response.Content.ReadFromJsonAsync<List<Dictionary<DateTime, List<ValuePath>>>>();
-
-
     }
 }

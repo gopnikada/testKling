@@ -59,7 +59,8 @@ namespace TrainingQuestCsharp.Server.Controllers
      (key, g) => new { Timestamp = key, Value = g.ToList<ValuePath>() }).Take(20);
 
             var type = groupedResults1.Select(x => new Dictionary<DateTime, List<ValuePath>> { { x.Timestamp, x.Value } }).ToList();
-            
+
+            type.ForEach(x => x.FirstOrDefault().Value.RemoveAll(y=>y.Value==0));
 
             //var sdf2 = groupedResults1.ToDictionary(x=>x.Value.
             //});
